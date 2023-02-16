@@ -30,6 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            StreamBuilder(
+              stream: widget.controller.totalQuestionsStream,
+              initialData: 0,
+              builder: (_, snap) => Text('${snap.data!}'),
+            ),
             StreamBuilder<CardModel>(
               stream: widget.controller.currentQuestionStream,
               builder: (_, snap) {
@@ -46,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: MediaQuery.of(context).size.width * .2,
               child: FancyButtonWidget(
                 label: 'RESPONDER',
-                onPressed: () => widget.controller.answerQuestion(),
+                onPressed: widget.controller.answerQuestion,
               ),
             ),
           ],

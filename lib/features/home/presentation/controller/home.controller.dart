@@ -6,12 +6,16 @@ import 'package:japango/features/home/domain/models/card.model.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../initializer.dart';
 import '../../domain/exceptions/small_character.exception.dart';
 
 class HomeController implements IHomeController {
+  final kanaKit = const KanaKit();
+
   final IField<String> answer;
   final isTheCorrectAnswer = BehaviorSubject<bool>();
   final currentQuestion = BehaviorSubject<CardModel>();
+  final totalQuestions = BehaviorSubject<int>();
 
   HomeController({required this.answer});
 
@@ -25,18 +29,16 @@ class HomeController implements IHomeController {
   Stream<CardModel> get currentQuestionStream => currentQuestion.stream;
 
   @override
+  Stream<int> get totalQuestionsStream => totalQuestions;
+
+  @override
   void getOneQuestion() {
+    final list = Initializer.listCharacters;
+
+    final random = Random();
+    var element = list[random.nextInt(list.length)];
+
     try {
-      const kanaKit = KanaKit();
-
-      final list = List.generate(
-        87,
-        (index) => String.fromCharCode(index + 12352),
-      );
-
-      final random = Random();
-      var element = list[random.nextInt(list.length)];
-
       final romanji = kanaKit.toRomaji(element);
       if (kanaKit.isJapanese(romanji)) {
         throw SmallCharacterException();
@@ -45,9 +47,11 @@ class HomeController implements IHomeController {
       final question = CardModel(element);
       currentQuestion.sink.add(question);
     } on SmallCharacterException catch (_) {
-      print('achou character pequeno');
+      Initializer.listCharacters.remove(element);
       getOneQuestion();
     }
+
+    totalQuestions.sink.add(Initializer.listCharacters.length);
   }
 
   @override
@@ -57,6 +61,8 @@ class HomeController implements IHomeController {
       isTheCorrectAnswer.sink.add(isCorrect);
       if (isCorrect) {
         getOneQuestion();
+        final hiragana = kanaKit.toHiragana(answer.value!);
+        Initializer.listCharacters.remove(hiragana);
         answer.controller.text = '';
       }
     }
