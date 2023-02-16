@@ -18,6 +18,7 @@ class HomeController implements IHomeController {
   final totalQuestions = BehaviorSubject<int>.seeded(0);
   final totalWrongQuestions = BehaviorSubject<int>.seeded(0);
   final totalCorrectQuestions = BehaviorSubject<int>.seeded(0);
+  final correctAnswer = BehaviorSubject<String>();
 
   HomeController({required this.answer});
 
@@ -38,6 +39,9 @@ class HomeController implements IHomeController {
 
   @override
   Stream<int> get totalCorrectQuestionsStream => totalCorrectQuestions.stream;
+
+  @override
+  Stream<String> get correctAnswerStream => correctAnswer.stream;
 
   @override
   void getOneQuestion() {
@@ -79,12 +83,20 @@ class HomeController implements IHomeController {
         if (minor == 0) {
           final total = totalWrongQuestions.value! + 1;
           totalWrongQuestions.sink.add(total);
-          isTheCorrectAnswer.sink.add(true);
-          getOneQuestion();
+
+          final romanji = kanaKit.toRomaji(currentQuestion.value!.char);
+          correctAnswer.sink.add(romanji);
         }
       }
       answer.controller.text = '';
     }
+  }
+
+  @override
+  void getAnotherQuestion() {
+    correctAnswer.sink.add('');
+    isTheCorrectAnswer.sink.add(true);
+    getOneQuestion();
   }
 
   @override

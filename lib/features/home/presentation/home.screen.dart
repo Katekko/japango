@@ -83,9 +83,26 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 25),
             SizedBox(
               width: MediaQuery.of(context).size.width * .2,
-              child: FancyButtonWidget(
-                label: 'RESPONDER',
-                onPressed: widget.controller.answerQuestion,
+              child: StreamBuilder<String>(
+                stream: widget.controller.correctAnswerStream,
+                initialData: '',
+                builder: (_, snap) {
+                  return Column(
+                    children: [
+                      Visibility(
+                        visible: snap.data!.isNotEmpty,
+                        child: Text('Resposta correta: ${snap.data!}'),
+                      ),
+                      const SizedBox(height: 20),
+                      FancyButtonWidget(
+                        label: snap.data!.isNotEmpty ? 'PROXIMA' : 'RESPONDER',
+                        onPressed: snap.data!.isNotEmpty
+                            ? widget.controller.getAnotherQuestion
+                            : widget.controller.answerQuestion,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ],

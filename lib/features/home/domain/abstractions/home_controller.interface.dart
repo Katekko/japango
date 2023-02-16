@@ -11,7 +11,9 @@ abstract class IHomeController extends IController {
   Stream<int> get totalQuestionsStream;
   Stream<int> get totalWrongQuestionsStream;
   Stream<int> get totalCorrectQuestionsStream;
+  Stream<String> get correctAnswerStream;
 
   void getOneQuestion();
   void answerQuestion();
+  void getAnotherQuestion();
 }
