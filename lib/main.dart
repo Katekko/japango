@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:japango/features/home/presentation/home.screen.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'core/navigation/navigation.dart';
+import 'core/navigation/routes.dart';
+
+void main() async {
+  final initialRoute = await Routes.initialRoute;
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomeScreen());
+    return MaterialApp.router(routerConfig: Navigation.router);
   }
 }

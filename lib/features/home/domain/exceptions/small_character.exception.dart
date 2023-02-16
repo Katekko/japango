@@ -1,0 +1,1 @@
+class SmallCharacterException implements Exception {}

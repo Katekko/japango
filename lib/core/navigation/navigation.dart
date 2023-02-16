@@ -1,11 +1,26 @@
-class Routes {
-  static Future<String> get initialRoute async {
-    try {
-      return home;
-    } catch (err) {
-      return home;
-    }
-  }
+import 'package:go_router/go_router.dart';
 
-  static const home = '/home';
+import '../../features/home/presentation/home.screen.dart';
+import '../utils/provider.util.dart';
+import 'bindings/home_controller.binding.dart';
+import 'routes.dart';
+
+class Navigation {
+  static final router = GoRouter(
+    initialLocation: Routes.home,
+    debugLogDiagnostics: true,
+    routes: [
+      GoRoute(
+        path: Routes.home,
+        name: Routes.home,
+        builder: (context, state) => EntryProvider(
+          onBuild: (_) => const HomeScreen(),
+          onInit: (_) => HomeControllerBinding.inject(
+            password: state.queryParams['password'],
+          ),
+          onDispose: (_) => HomeControllerBinding.dipose(),
+        ),
+      ),
+    ],
+  );
 }
