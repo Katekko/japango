@@ -9,6 +9,8 @@ abstract class IHomeController extends IController {
   Stream<bool> get isTheCorrectAnswerStream;
   Stream<CardModel> get currentQuestionStream;
   Stream<int> get totalQuestionsStream;
+  Stream<int> get totalWrongQuestionsStream;
+  Stream<int> get totalCorrectQuestionsStream;
 
   void getOneQuestion();
   void answerQuestion();

@@ -30,15 +30,49 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StreamBuilder(
-              stream: widget.controller.totalQuestionsStream,
-              initialData: 0,
-              builder: (_, snap) => Text('${snap.data!}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StreamBuilder(
+                  stream: widget.controller.totalCorrectQuestionsStream,
+                  initialData: 0,
+                  builder: (_, snap) => Text(
+                    '${snap.data!}',
+                    style: const TextStyle(color: Colors.green),
+                  ),
+                ),
+                const SizedBox(width: 30),
+                StreamBuilder(
+                  stream: widget.controller.totalQuestionsStream,
+                  initialData: 0,
+                  builder: (_, snap) => Text('${snap.data!}'),
+                ),
+                const SizedBox(width: 30),
+                StreamBuilder(
+                  stream: widget.controller.totalWrongQuestionsStream,
+                  initialData: 0,
+                  builder: (_, snap) => Text(
+                    '${snap.data!}',
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
             ),
             StreamBuilder<CardModel>(
               stream: widget.controller.currentQuestionStream,
               builder: (_, snap) {
-                return CardWidget(character: snap.data?.char ?? '');
+                return Column(
+                  children: [
+                    CardWidget(character: snap.data?.char ?? ''),
+                    StreamBuilder<int>(
+                      stream: snap.data?.remainingChances,
+                      initialData: 0,
+                      builder: (_, chancesSnap) {
+                        return Text('Chances faltantes: ${chancesSnap.data}');
+                      },
+                    ),
+                  ],
+                );
               },
             ),
             const SizedBox(height: 30),

@@ -15,7 +15,9 @@ class HomeController implements IHomeController {
   final IField<String> answer;
   final isTheCorrectAnswer = BehaviorSubject<bool>();
   final currentQuestion = BehaviorSubject<CardModel>();
-  final totalQuestions = BehaviorSubject<int>();
+  final totalQuestions = BehaviorSubject<int>.seeded(0);
+  final totalWrongQuestions = BehaviorSubject<int>.seeded(0);
+  final totalCorrectQuestions = BehaviorSubject<int>.seeded(0);
 
   HomeController({required this.answer});
 
@@ -30,6 +32,12 @@ class HomeController implements IHomeController {
 
   @override
   Stream<int> get totalQuestionsStream => totalQuestions;
+
+  @override
+  Stream<int> get totalWrongQuestionsStream => totalWrongQuestions.stream;
+
+  @override
+  Stream<int> get totalCorrectQuestionsStream => totalCorrectQuestions.stream;
 
   @override
   void getOneQuestion() {
@@ -60,11 +68,22 @@ class HomeController implements IHomeController {
       final isCorrect = currentQuestion.value!.isCorrect(answer.value!);
       isTheCorrectAnswer.sink.add(isCorrect);
       if (isCorrect) {
+        final total = totalCorrectQuestions.value! + 1;
+        totalCorrectQuestions.sink.add(total);
         getOneQuestion();
         final hiragana = kanaKit.toHiragana(answer.value!);
         Initializer.listCharacters.remove(hiragana);
-        answer.controller.text = '';
+      } else {
+        final minor = currentQuestion.value!.remainingChances.value! - 1;
+        currentQuestion.value!.remainingChances.sink.add(minor);
+        if (minor == 0) {
+          final total = totalWrongQuestions.value! + 1;
+          totalWrongQuestions.sink.add(total);
+          isTheCorrectAnswer.sink.add(true);
+          getOneQuestion();
+        }
       }
+      answer.controller.text = '';
     }
   }
 

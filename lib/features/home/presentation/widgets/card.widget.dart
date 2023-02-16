@@ -13,6 +13,7 @@ class CardWidget extends ViewController<IHomeController> {
       initialData: true,
       builder: (_, snap) {
         return Card(
+          elevation: 5,
           color: !snap.data! ? Colors.red.withOpacity(.1) : null,
           shadowColor: !snap.data! ? Colors.red : null,
           child: Padding(
