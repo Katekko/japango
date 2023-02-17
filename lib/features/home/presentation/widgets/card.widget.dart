@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:japango/features/home/domain/abstractions/home_controller.interface.dart';
+import 'package:japango/features/home/domain/abstractions/controllers/home_controller.interface.dart';
 import 'package:japango/features/shared/view_controller.interface.dart';
 
 class CardWidget extends ViewController<IHomeController> {

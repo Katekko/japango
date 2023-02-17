@@ -1,5 +1,5 @@
 class Initializer {
-  static final listCharacters = [];
+  static final listCharacters = <String>[];
   static void init() {
     final list = List.generate(
       87,

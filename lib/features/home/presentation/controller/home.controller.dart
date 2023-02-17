@@ -1,68 +1,24 @@
-import 'dart:math';
-
 import 'package:japango/core/abstractions/field.interface.dart';
-import 'package:japango/features/home/domain/abstractions/home_controller.interface.dart';
-import 'package:japango/features/home/domain/models/card.model.dart';
-import 'package:kana_kit/kana_kit.dart';
+import 'package:japango/features/home/domain/usecases/get_one_question.usecase.dart';
+import 'package:japango/features/home/presentation/controller/mixins/home_state.mixin.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../initializer.dart';
-import '../../domain/exceptions/small_character.exception.dart';
 
-class HomeController implements IHomeController {
-  final kanaKit = const KanaKit();
-
-  final IField<String> answer;
-  final isTheCorrectAnswer = BehaviorSubject<bool>();
-  final currentQuestion = BehaviorSubject<CardModel>();
-  final totalQuestions = BehaviorSubject<int>.seeded(0);
-  final totalWrongQuestions = BehaviorSubject<int>.seeded(0);
-  final totalCorrectQuestions = BehaviorSubject<int>.seeded(0);
-  final correctAnswer = BehaviorSubject<String>();
-
-  HomeController({required this.answer});
-
-  @override
-  IField<String> get answerField => answer;
-
-  @override
-  Stream<bool> get isTheCorrectAnswerStream => isTheCorrectAnswer.stream;
-
-  @override
-  Stream<CardModel> get currentQuestionStream => currentQuestion.stream;
-
-  @override
-  Stream<int> get totalQuestionsStream => totalQuestions;
-
-  @override
-  Stream<int> get totalWrongQuestionsStream => totalWrongQuestions.stream;
-
-  @override
-  Stream<int> get totalCorrectQuestionsStream => totalCorrectQuestions.stream;
-
-  @override
-  Stream<String> get correctAnswerStream => correctAnswer.stream;
+class HomeController with HomeStateMixin {
+  HomeController({
+    required IField<String> answer,
+    required GetOneQuestionUseCase getOneQuestionUseCase,
+  }) {
+    this.answer = answer;
+    this.getOneQuestionUseCase = getOneQuestionUseCase;
+  }
 
   @override
   void getOneQuestion() {
     final list = Initializer.listCharacters;
-
-    final random = Random();
-    var element = list[random.nextInt(list.length)];
-
-    try {
-      final romanji = kanaKit.toRomaji(element);
-      if (kanaKit.isJapanese(romanji)) {
-        throw SmallCharacterException();
-      }
-
-      final question = CardModel(element);
-      currentQuestion.sink.add(question);
-    } on SmallCharacterException catch (_) {
-      Initializer.listCharacters.remove(element);
-      getOneQuestion();
-    }
-
+    final question = getOneQuestionUseCase(characterList: list);
+    currentQuestion.sink.add(question);
     totalQuestions.sink.add(Initializer.listCharacters.length);
   }
 

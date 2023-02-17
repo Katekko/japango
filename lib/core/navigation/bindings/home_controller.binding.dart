@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../features/home/domain/abstractions/home_controller.interface.dart';
+import '../../../features/home/domain/abstractions/controllers/home_controller.interface.dart';
 import '../../../features/home/presentation/controller/home.controller.dart';
 import '../../abstractions/field.interface.dart';
 import '../../builders/field_validator.builder.dart';
