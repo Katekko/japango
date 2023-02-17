@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/home/presentation/home.screen.dart';
 import '../utils/provider.util.dart';
-import 'bindings/home_controller.binding.dart';
+import '../../features/home/domain/bindings/home_controller.binding.dart';
 import 'routes.dart';
 
 class Navigation {

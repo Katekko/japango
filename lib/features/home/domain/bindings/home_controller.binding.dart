@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:japango/features/home/domain/usecases/get_one_question.usecase.dart';
 
-import '../../../features/home/domain/abstractions/controllers/home_controller.interface.dart';
-import '../../../features/home/presentation/controller/home.controller.dart';
-import '../../abstractions/field.interface.dart';
-import '../../builders/field_validator.builder.dart';
-import '../../inject.dart';
-import '../../models/react_field.model.dart';
+import '../abstractions/controllers/home_controller.interface.dart';
+import '../../presentation/controller/home.controller.dart';
+import '../../../../core/abstractions/field.interface.dart';
+import '../../../../core/builders/field_validator.builder.dart';
+import '../../../../core/inject.dart';
+import '../../../../core/models/react_field.model.dart';
 
 class HomeControllerBinding {
   static void inject({String? password}) {
