@@ -34,8 +34,8 @@ class HomeController with HomeStateMixin {
         final hiragana = kanaKit.toHiragana(answer.value!);
         Initializer.listCharacters.remove(hiragana);
       } else {
-        final minor = currentQuestion.value!.remainingChances.value! - 1;
-        currentQuestion.value!.remainingChances.sink.add(minor);
+        final minor = remainingChances.value! - 1;
+        remainingChances.sink.add(minor);
         if (minor == 0) {
           final total = totalWrongQuestions.value! + 1;
           totalWrongQuestions.sink.add(total);

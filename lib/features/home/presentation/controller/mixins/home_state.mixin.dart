@@ -16,6 +16,7 @@ mixin HomeStateMixin implements IHomeController {
   final totalWrongQuestions = BehaviorSubject<int>.seeded(0);
   final totalCorrectQuestions = BehaviorSubject<int>.seeded(0);
   final correctAnswer = BehaviorSubject<String>();
+  final remainingChances = BehaviorSubject<int>.seeded(3);
 
   late final GetOneQuestionUseCase getOneQuestionUseCase;
 
@@ -39,4 +40,7 @@ mixin HomeStateMixin implements IHomeController {
 
   @override
   Stream<String> get correctAnswerStream => correctAnswer.stream;
+
+  @override
+  Stream<int> get remainingChancesStream => remainingChances.stream;
 }

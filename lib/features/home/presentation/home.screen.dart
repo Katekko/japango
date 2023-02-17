@@ -61,18 +61,14 @@ class _HomeScreenState extends State<HomeScreen> {
             StreamBuilder<CardModel>(
               stream: widget.controller.currentQuestionStream,
               builder: (_, snap) {
-                return Column(
-                  children: [
-                    CardWidget(character: snap.data?.char ?? ''),
-                    StreamBuilder<int>(
-                      stream: snap.data?.remainingChances,
-                      initialData: 0,
-                      builder: (_, chancesSnap) {
-                        return Text('Chances faltantes: ${chancesSnap.data}');
-                      },
-                    ),
-                  ],
-                );
+                return CardWidget(character: snap.data?.char ?? '');
+              },
+            ),
+            StreamBuilder<int>(
+              stream: widget.controller.remainingChancesStream,
+              initialData: 0,
+              builder: (_, chancesSnap) {
+                return Text('Chances faltantes: ${chancesSnap.data}');
               },
             ),
             const SizedBox(height: 30),

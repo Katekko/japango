@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:japango/features/home/domain/usecases/get_one_question.usecase.dart';
 
 import '../../../features/home/domain/abstractions/controllers/home_controller.interface.dart';
 import '../../../features/home/presentation/controller/home.controller.dart';
@@ -24,7 +25,10 @@ class HomeControllerBinding {
   }
 }
 
-IHomeController makeHomeController() => HomeController(answer: makeNameField());
+IHomeController makeHomeController() => HomeController(
+      answer: makeNameField(),
+      getOneQuestionUseCase: GetOneQuestionUseCase(),
+    );
 
 IField<String> makeNameField() {
   return ReactFieldModel(
