@@ -25,6 +25,9 @@ class ReactFieldModel<T> extends IField<T> {
   }
 
   @override
+  void clearError() => _error.sink.add(null);
+
+  @override
   Stream<String?> get errorStream => _error.stream;
 
   @override

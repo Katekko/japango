@@ -25,7 +25,7 @@ class TextFieldWidget extends StatelessWidget {
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFF1F0D7), width: 1),
             ),
-            // errorText: snapshot.data,
+            errorText: snapshot.data,
           ),
         );
       },

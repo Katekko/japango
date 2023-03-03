@@ -52,9 +52,14 @@ class HomeController with HomeStateMixin {
   void getAnotherQuestion() {
     correctAnswer.sink.add('');
     isTheCorrectAnswer.sink.add(true);
+    answer.clearError();
     getOneQuestion();
   }
 
   @override
-  void dispose() {}
+  void dispose() {
+    answer.dispose();
+    isTheCorrectAnswer.close();
+    correctAnswer.close();
+  }
 }

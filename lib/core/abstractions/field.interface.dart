@@ -24,6 +24,8 @@ abstract class IField<T> extends IValidator<T> {
 
   void dispose();
 
+  void clearError();
+
   // Isso daqui ta muito estranho, preciso de ajuda
   @override
   bool operator ==(Object other) {
